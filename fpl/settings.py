@@ -26,7 +26,7 @@ SECRET_KEY = '8u-sn@wsyl()iby+b_jeky#i=t5aedfz8gx47p2d!=b2i1btjb'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'fpl.herokuapp.com',
+    'fpl-transfer-checker.herokuapp.com',
     '127.0.0.1',
     '0.0.0.0'
 ]
