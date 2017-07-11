@@ -7,23 +7,23 @@ from transferchecker.functions.requestor import Requestor
 def index(request):
     requestor = Requestor()
 
+    # full player info to populate search autocomplete
     all_player_info = requestor.get_all_player_info()
 
+    # all players currently taken
+    user_list = requestor.get_group_ids('508077')
+    taken_list = []
+    for id in user_list:
+        user_gameweek_roster = requestor.get_user_gameweek_roster(id, '38')
+        for player_id in user_gameweek_roster:
+            taken_list.append(player_id)
+
+    # passing data to front end
     if request.method == 'POST':
         data = {
-            'names': requestor.get_all_player_names()
+            'all_player_info': all_player_info,
+            'taken_list': taken_list
         }
         return JsonResponse(data)
 
-    user_list = requestor.get_group_ids('508077')
-
-    player_list = []
-    for id in user_list:
-        user_gameweek_roster = requestor.get_user_gameweek_roster(id, '38')
-
-        for player_id in user_gameweek_roster:
-            player_element = all_player_info[player_id]
-            player_list.append(player_element['first_name'] + ' ' + player_element['second_name'])
-
-    #return HttpResponse(', '.join(player_list))
     return render(request, 'transferchecker/index.html')

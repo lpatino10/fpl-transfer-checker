@@ -3,7 +3,6 @@ import requests
 class Requestor(object):
     def __init__(self):
         self.base_url = 'https://fantasy.premierleague.com/drf/'
-        self.all_players = None
 
     def get_group_ids(self, league_id):
         league_url = 'leagues-classic-standings/' + league_id
@@ -16,28 +15,43 @@ class Requestor(object):
         
         return id_list
 
+    def get_team_info(self):
+        team_url = 'teams'
+        request_url = self.base_url + team_url
+        team_info = requests.get(request_url).json()
+        return team_info
+
     def get_all_player_info(self):
-
-        # so we only have to pull all this once, and only when we need it
-        if self.all_players:
-            return self.all_players
-
         players_url = 'elements'
         request_url = self.base_url + players_url
+        all_players = requests.get(request_url).json()
+        team_info = self.get_team_info()
 
-        self.all_players = requests.get(request_url).json()
-        return self.all_players
+        player_info = []
+        for i, player in enumerate(all_players):
+            # getting player name
+            player_name = player['first_name'] + ' ' + player['second_name']
 
-    def get_all_player_names(self):
-        name_list = []
-        for player in self.all_players:
-            name_list.append(player['first_name'] + ' ' + player['second_name'])
-        return name_list
+            # getting team name
+            team_code = player['team_code']
+            team_name = ''
+            for team in team_info:
+                if team['code'] == team_code:
+                    team_name = team['short_name']
+                    break
+
+            # putting it all together along with player ID
+            player_info.append({
+                'player_id': i + 1,
+                'player_name': player_name,
+                'team_name': team_name
+            })
+            
+        return player_info
 
     def get_user_gameweek_roster(self, user_id, gameweek):
         user_roster_url = 'entry/' + user_id + '/event/' + gameweek + '/picks'
         request_url = self.base_url + user_roster_url
-        # make request and do something with it
 
         picks_info = requests.get(request_url).json()
         player_list = []
