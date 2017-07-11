@@ -28,6 +28,12 @@ class Requestor(object):
         self.all_players = requests.get(request_url).json()
         return self.all_players
 
+    def get_all_player_names(self):
+        name_list = []
+        for player in self.all_players:
+            name_list.append(player['first_name'] + ' ' + player['second_name'])
+        return name_list
+
     def get_user_gameweek_roster(self, user_id, gameweek):
         user_roster_url = 'entry/' + user_id + '/event/' + gameweek + '/picks'
         request_url = self.base_url + user_roster_url
