@@ -1,6 +1,8 @@
+var takenPlayers = null;
 var response = $.post(window.location.href);
 response.done(function(data) {
     var playerData = data.all_player_info;
+    takenPlayers = new Set(data.taken_list);
     constructEngine(playerData);
 });
 
@@ -8,7 +10,8 @@ function transformData(playerData) {
     return $.map(playerData, function (player) {
         return {
             name: player.player_name,
-            team: player.team_name
+            team: player.team_name,
+            id: player.player_id
         };
     });
 }
@@ -37,3 +40,12 @@ function constructEngine(playerData) {
         }
     });
 }
+
+$('.typeahead').bind('typeahead:select', function(ev, suggestion) {
+  if (takenPlayers.has(suggestion.id)) {
+      console.log('Taken');
+  }
+  else {
+      console.log('Not taken');
+  }
+});
