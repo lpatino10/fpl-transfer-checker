@@ -51,6 +51,7 @@ $('.typeahead').typeahead({
 });
 
 $('.typeahead').on('input', function() {
+    window.scrollTo(0,document.body.scrollHeight);
     if (!$('#result').hasClass('invis')) {
         $('#result').removeClass();
         $('#result').addClass('glyphicon glyphicon-minus invis');
