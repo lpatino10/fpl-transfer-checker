@@ -4,14 +4,15 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>FPL Transfer Checker</title>
+        <title>FPL Player Checker</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" type="text/css" href="{% static 'transferchecker/css/bootstrap.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'transferchecker/css/bootstrap-social.css' %}" />   
         <link rel="stylesheet" type="text/css" href="{% static 'transferchecker/css/font-awesome.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'transferchecker/css/added-styles.css' %}" />
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -21,9 +22,18 @@
         <![endif]-->
     </head>
     <body>
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="text-center">Fantasy Premier League Player Checker</h1><br>
+                <p>
+                    Use this tool to see what players are available for picking up on your team. Simply begin typing a player's name
+                    into the text box and select the correct suggestion to see their availability.
+                </p>
+            </div>
+        </div>
 
-        <div id="bloodhound">
-            <input class="typeahead" type="text" placeholder="Player Name">
+        <div class="container">
+            <input class="typeahead form-control" type="text" autocomplete="off" placeholder="Player Name">
         </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -33,7 +43,8 @@
         <!-- Handlebars -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.js"></script>
         <!-- Autocomplete box -->
-        <script src="{% static 'transferchecker/js/typeahead.bundle.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.1.1/bloodhound.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
         <script src="{% static 'transferchecker/js/searchbar.js' %}"></script>
     </body>
 </html>

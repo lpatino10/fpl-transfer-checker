@@ -1,9 +1,10 @@
-var takenPlayers = null;
-var response = $.post(window.location.href);
-response.done(function(data) {
-    var playerData = data.all_player_info;
-    takenPlayers = new Set(data.taken_list);
-    constructEngine(playerData);
+// constructs the suggestion engine
+var engine = new Bloodhound({
+    initialize: false,
+    datumTokenizer: function (datum) {
+        return Bloodhound.tokenizers.whitespace(datum.name);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace
 });
 
 function transformData(playerData) {
@@ -16,36 +17,35 @@ function transformData(playerData) {
     });
 }
 
-function constructEngine(playerData) {
-    // constructs the suggestion engine
-    var playerData = new Bloodhound({
-        datumTokenizer: function (datum) {
-            return Bloodhound.tokenizers.whitespace(datum.name);
-        },
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: transformData(playerData)
-    });
+var takenPlayers = null;
+var response = $.post(window.location.href);
+response.done(function(data) {
+    var playerData = data.all_player_info;
+    takenPlayers = new Set(data.taken_list);
+    playerData = transformData(playerData);
+    engine.local = playerData;
 
-    $('#bloodhound .typeahead').typeahead({
-        hint: true,
-        highlight: false,
-        minLength: 1
+    // initializes suggestion engine here
+    engine.initialize();
+});
+
+$('.typeahead').typeahead({
+    hint: true,
+    source: engine.ttAdapter(),
+    displayText: function (player) {
+  	    return player.name + '<span class="dropdown-item-extra">' + player.team + '</span>'
     },
-    {
-        name: 'playerData',
-        source: playerData,
-        display: 'name',
-        templates: {
-            suggestion: Handlebars.compile('<div>{{name}} ({{team}})</div>')
-        }
-    });
-}
+    highlighter: Object,
+    afterSelect: function(player) { 
+        // makes sure we don't show HTML in text box
+        $('.typeahead').val(player.name).change(); 
 
-$('.typeahead').bind('typeahead:select', function(ev, suggestion) {
-  if (takenPlayers.has(suggestion.id)) {
-      console.log('Taken');
-  }
-  else {
-      console.log('Not taken');
-  }
+        // does check against rest of the league's players
+        if (takenPlayers.has(player.id)) {
+            console.log('Taken');
+        }
+        else {
+            console.log('Not taken');
+        }
+    }
 });
