@@ -26,14 +26,23 @@
             <div class="container">
                 <h1 class="text-center">Fantasy Premier League Player Checker</h1><br>
                 <p>
-                    Use this tool to see what players are available for picking up on your team. Simply begin typing a player's name
+                    Use this tool to see what players are available for picking up on your team. Begin typing a player's name
                     into the text box and select the correct suggestion to see their availability.
+                </p>
+                <p class="text-center">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> = you're good to go
+                </p>
+                <p class="text-center">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> = they're already taken
                 </p>
             </div>
         </div>
 
         <div class="container">
-            <input class="typeahead form-control" type="text" autocomplete="off" placeholder="Player Name">
+            <div class="input-group">
+                <input class="typeahead form-control" type="text" autocomplete="off" placeholder="Player Name">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-minus invis" id="result" aria-hidden="true"></span></span>
+            </div>
         </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

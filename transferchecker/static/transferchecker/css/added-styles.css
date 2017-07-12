@@ -3,3 +3,15 @@
     color: #c1c1c1;
     padding-left: 15px;
 }
+
+.invis {
+    color: transparent;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}

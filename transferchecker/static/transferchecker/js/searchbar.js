@@ -42,10 +42,17 @@ $('.typeahead').typeahead({
 
         // does check against rest of the league's players
         if (takenPlayers.has(player.id)) {
-            console.log('Taken');
+            $('#result').toggleClass('invis').toggleClass('glyphicon-minus').toggleClass('glyphicon-remove').toggleClass('red');
         }
         else {
-            console.log('Not taken');
+            $('#result').toggleClass('invis').toggleClass('glyphicon-minus').toggleClass('glyphicon-ok').toggleClass('green');
         }
+    }
+});
+
+$('.typeahead').on('input', function() {
+    if (!$('#result').hasClass('invis')) {
+        $('#result').removeClass();
+        $('#result').addClass('glyphicon glyphicon-minus invis');
     }
 });
